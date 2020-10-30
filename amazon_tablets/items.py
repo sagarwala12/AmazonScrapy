@@ -6,7 +6,12 @@
 import scrapy
 
 
-class AmazonTabletsItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class Tablet(scrapy.Item):
+    title = scrapy.Field()
+    brand = scrapy.Field()
+    rating = scrapy.Field()
+    price = scrapy.Field()
+    colour = scrapy.Field()
+    instock = scrapy.Field()
+    reviews = scrapy.Field()
+    description = scrapy.Field()
