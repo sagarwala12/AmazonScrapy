@@ -46,6 +46,7 @@ class AmazonSpider(scrapy.Spider):
         title = response.xpath("//span[@id='productTitle']//text()").get() or response.xpath("//h1[@id='title']//text()").get()
         brand = response.xpath("//a[@id='bylineInfo']//text()").get() or "not specified"
         rating = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@class='a-icon-alt']//text()").get()
+        num_reviews = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@id='acrCustomerReviewText']//text()").get()
 
         price = response.xpath("//span[@id='priceblock_ourprice']//text()") or response.xpath("//span[@id='priceblock_dealprice']//text()")
         print(price)
@@ -63,12 +64,12 @@ class AmazonSpider(scrapy.Spider):
         for description_temp in description_raw:
             description.append(description_temp.strip())
 
-        print(title, brand, rating, price)
+        print(title, brand, rating, price, num_reviews)
         # print(final_review)
         # print(reviews)
         # print(description)
 
-        yield Tablet(title = title.strip(), brand = brand.strip(), rating = rating.strip(), price = price.strip(), description = description)
+        yield Tablet(title = title.strip(), brand = brand.strip(), rating = rating.strip(), num_reviews = num_reviews.strip(), price = price.strip(), description = description)
 
 
    
