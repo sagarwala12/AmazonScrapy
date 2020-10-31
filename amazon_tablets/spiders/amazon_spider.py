@@ -1,5 +1,7 @@
+#-*- coding: utf-8 -*-
 import scrapy
 from ..items import Tablet
+import re
 
 class AmazonSpider(scrapy.Spider):
     name = 'amazon_spider'
@@ -45,6 +47,11 @@ class AmazonSpider(scrapy.Spider):
     def parse_tablet(self, response):
         title = response.xpath("//span[@id='productTitle']//text()").get() or response.xpath("//h1[@id='title']//text()").get()
         brand = response.xpath("//a[@id='bylineInfo']//text()").get() or "not specified"
+        #print(brand)
+        if brand.lower()[0] == 'b':
+            brand = brand.split()[-1]
+        else:
+            brand = brand.split()[2]
         rating = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@class='a-icon-alt']//text()").get()
         num_reviews = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@id='acrCustomerReviewText']//text()").get()
 
