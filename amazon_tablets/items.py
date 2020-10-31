@@ -10,6 +10,6 @@ class Tablet(scrapy.Item):
     title = scrapy.Field()
     brand = scrapy.Field()
     rating = scrapy.Field()
-    num_reviews = scrapy.Field()
+    #num_reviews = scrapy.Field()
     price = scrapy.Field()
     description = scrapy.Field()
