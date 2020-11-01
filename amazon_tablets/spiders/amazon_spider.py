@@ -9,7 +9,7 @@ class AmazonSpider(scrapy.Spider):
     #start_urls = ["https://www.amazon.com/s?k=tablet&i=electronics&ref=nb_sb_noss_1"]
      # How many pages to scrape
      #set to 1 for testing 
-    no_of_pages = 3
+    no_of_pages = 400
 
     # Headers to fix 503 service unavailable error
     # User agent will make it look like request is coming from browser 
@@ -47,17 +47,19 @@ class AmazonSpider(scrapy.Spider):
 
     def parse_tablet(self, response):
         title = response.xpath("//span[@id='productTitle']//text()").get() or response.xpath("//h1[@id='title']//text()").get()
-        brand = response.xpath("//a[@id='bylineInfo']//text()").get() or "not specified"
+        brand = response.xpath("//a[@id='bylineInfo']//text()").get() or "N/A"
         #print(brand)
         if brand.lower()[0] == 'b':
             brand = brand.split()[-1]
         else:
             brand = brand.split()[2]
 
-        rating = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@class='a-icon-alt']//text()").get()
-        num_reviews = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@id='acrCustomerReviewText']//text()").get()
+        rating = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@class='a-icon-alt']//text()").get() or "N/A"
+        if rating[0] == 'P':
+            rating = 'N/A'
+        num_reviews = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@id='acrCustomerReviewText']//text()").get() or "N/A"
 
-        #If no price available, product will be skipped (Attribute error) 
+        #If original price striked out, select deal price, if deal price unavailable, select sale price, if all unavailable then N/A
         price = response.xpath("//span[@id='priceblock_ourprice']//text()").get() or response.xpath("//span[@id='priceblock_dealprice']//text()").get() or response.xpath("//span[@id='priceblock_saleprice']//text()").get() or 'N/A'
 
 
@@ -68,7 +70,7 @@ class AmazonSpider(scrapy.Spider):
 
         
 
-        description_raw = response.xpath("//div[@id='featurebullets_feature_div']//span[@class='a-list-item']//text()").getall()
+        description_raw = response.xpath("//div[@id='feature-bullets']//li/span/text()").getall() or "N/A"
 
 
 
