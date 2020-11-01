@@ -29,7 +29,7 @@ from scrapy.exporters import JsonItemExporter
 
 class WriteItemPipeline(object):
     def __init__(self):
-        self.file = open("data2.json", 'wb')
+        self.file = open("data.json", 'wb')
         self.exporter = JsonItemExporter(self.file)#, encoding='utf-8', ensure_ascii=False)
         self.exporter.start_exporting()
 
