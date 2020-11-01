@@ -71,8 +71,7 @@ class AmazonSpider(scrapy.Spider):
         
 
         description_raw = response.xpath("//div[@id='feature-bullets']//li/span/text()").getall() or "N/A"
-
-
+        
 
 
         description = []
