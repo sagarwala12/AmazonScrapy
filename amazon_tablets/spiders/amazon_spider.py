@@ -9,7 +9,7 @@ class AmazonSpider(scrapy.Spider):
     #start_urls = ["https://www.amazon.com/s?k=tablet&i=electronics&ref=nb_sb_noss_1"]
      # How many pages to scrape
      #set to 1 for testing 
-    no_of_pages = 100
+    no_of_pages = 3
 
     # Headers to fix 503 service unavailable error
     # User agent will make it look like request is coming from browser 
@@ -57,11 +57,10 @@ class AmazonSpider(scrapy.Spider):
         rating = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@class='a-icon-alt']//text()").get()
         num_reviews = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@id='acrCustomerReviewText']//text()").get()
 
-        #attribute errors due to no price! 
-        price = response.xpath("//span[@id='priceblock_ourprice']//text()").get() or response.xpath("//span[@id='priceblock_dealprice']//text()").get() or response.xpath("//span[@id='priceblock_saleprice']//text()").get()
+        #If no price available, product will be skipped (Attribute error) 
+        price = response.xpath("//span[@id='priceblock_ourprice']//text()").get() or response.xpath("//span[@id='priceblock_dealprice']//text()").get() or response.xpath("//span[@id='priceblock_saleprice']//text()").get() or 'N/A'
 
 
-        #### to get sale price. Removed due to causing parsing errors, will use List price for data. 
         #print(price)
         #if len(price) > 1: price = price[1].get()
         #elif len(price) == 1: price = price[0].get()
