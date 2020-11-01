@@ -54,9 +54,11 @@ class AmazonSpider(scrapy.Spider):
         else:
             brand = brand.split()[2]
 
-        rating = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@class='a-icon-alt']//text()").get() or "N/A"
-        if rating[0] == 'P':
-            rating = 'N/A'
+
+        rating = response.xpath("//*[@id='acrPopover']/@title").get() or "N/A"
+        # rating = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@class='a-icon-alt']//text()").get() or "N/A"
+        # if rating[0] == 'P':
+        #     rating = 'N/A'
         num_reviews = response.xpath("//div[@id='averageCustomerReviews_feature_div']").xpath("//span[@id='acrCustomerReviewText']//text()").get() or "N/A"
 
         #If original price striked out, select deal price, if deal price unavailable, select sale price, if all unavailable then N/A
