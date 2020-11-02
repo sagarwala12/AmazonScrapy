@@ -47,6 +47,7 @@ class AmazonSpider(scrapy.Spider):
 
     def parse_tablet(self, response):
         title = response.xpath("//span[@id='productTitle']//text()").get() or response.xpath("//h1[@id='title']//text()").get()
+
         brand = response.xpath("//a[@id='bylineInfo']//text()").get() or "N/A"
         #print(brand)
         if brand.lower()[0] == 'b':
